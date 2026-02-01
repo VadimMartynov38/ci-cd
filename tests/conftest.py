@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 import pytest
-from flask import json
 
 from src.app import create_app
 from src.app import db as _db  # замените yourapp на пакет с вашим create_app

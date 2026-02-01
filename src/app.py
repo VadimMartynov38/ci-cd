@@ -93,7 +93,8 @@ def create_app():
             return (
                 jsonify(
                     {
-                        "error": "active parking session already exists for this client on this parking"
+                        "error": "active parking session already exists "
+                                 "for this client on this parking"
                     }
                 ),
                 400,

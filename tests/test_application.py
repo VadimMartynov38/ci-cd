@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pytest
 
 GET_ENDPOINTS = [
@@ -81,7 +79,7 @@ def test_exit_parking(client):
     )
     assert rv_enter.status_code == 201
     entry = rv_enter.get_json()
-    ep_id = entry["id"]
+    _ = entry["id"]
 
     rv_exit = client.delete(
         "/client_parkings", json={"client_id": cid, "parking_id": pid}
