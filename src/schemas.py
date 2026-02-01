@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, conint
+from pydantic import BaseModel
 
 
 class IngredientBase(BaseModel):
