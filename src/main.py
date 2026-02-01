@@ -24,21 +24,31 @@ async def shutdown():
     await engine.dispose()
 
 
-@app.post("/recipes", response_model=schemas.Recipe, status_code=status.HTTP_201_CREATED)
+@app.post(
+    "/recipes", response_model=schemas.Recipe, status_code=status.HTTP_201_CREATED
+)
 async def create_recipe(payload: schemas.RecipeCreate):
     new = models.Recipe(title=payload.title, cook_time=payload.cook_time)
     if payload.ingredients:
         for ing in payload.ingredients:
-            new.ingredients.append(models.Ingredient(name=ing.name, quantity=ing.quantity))
+            new.ingredients.append(
+                models.Ingredient(name=ing.name, quantity=ing.quantity)
+            )
     session.add(new)
     await session.commit()
     await session.refresh(new)
     return new
 
+
 @app.get("/recipes", response_model=List[schemas.RecipeListItem])
 async def list_recipes() -> List[models.Recipe]:
-    res = await session.execute(select(models.Recipe).order_by(desc(models.Recipe.views), asc(models.Recipe.cook_time)))
+    res = await session.execute(
+        select(models.Recipe).order_by(
+            desc(models.Recipe.views), asc(models.Recipe.cook_time)
+        )
+    )
     return res.scalars().all()
+
 
 @app.get("/recipes/{recipe_id}", response_model=schemas.Recipe)
 async def get_recipe(recipe_id: int) -> models.Recipe:

@@ -12,11 +12,13 @@ from src import models
 app = main_module.app
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
+
 @pytest.fixture(scope="session")
 def event_loop():
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
+
 
 @pytest.fixture(autouse=True)
 async def setup_test_db(monkeypatch):
@@ -40,13 +42,14 @@ async def setup_test_db(monkeypatch):
         await conn.run_sync(models.Base.metadata.drop_all)
     await engine.dispose()
 
+
 @pytest.mark.asyncio
 async def test_create_and_get_recipe():
     async with AsyncClient(app=app, base_url="http://testserver") as ac:
         payload = {
             "title": "Soup",
             "cook_time": 15,
-            "ingredients": [{"name": "Water", "quantity": "1L"}]
+            "ingredients": [{"name": "Water", "quantity": "1L"}],
         }
         r = await ac.post("/recipes", json=payload)
         assert r.status_code == 201
@@ -64,6 +67,7 @@ async def test_create_and_get_recipe():
         r3 = await ac.get(f"/recipes/{rid}")
         assert r3.status_code == 200
         assert r3.json()["views"] == 2
+
 
 @pytest.mark.asyncio
 async def test_list_ordering_and_multiple():
@@ -89,6 +93,7 @@ async def test_list_ordering_and_multiple():
         assert titles[0] == "B"
         assert titles[1] == "C"
         assert titles[2] == "A"
+
 
 @pytest.mark.asyncio
 async def test_get_nonexistent():
