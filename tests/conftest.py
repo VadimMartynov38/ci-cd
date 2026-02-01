@@ -1,7 +1,11 @@
-import pytest
 from datetime import datetime, timedelta
+
+import pytest
 from flask import json
-from src.app import create_app, db as _db  # замените yourapp на пакет с вашим create_app
+
+from src.app import create_app
+from src.app import db as _db  # замените yourapp на пакет с вашим create_app
+
 
 @pytest.fixture(scope="session")
 def app():
@@ -26,7 +30,7 @@ def db(app):
 
 @pytest.fixture
 def sample_data(app, db):
-    from src.models import Client, Parking, ClientParking  # путь к моделям
+    from src.models import Client, ClientParking, Parking  # путь к моделям
     with app.app_context():
         client = Client(name="Ivan", surname="Petrov", credit_card="1111222233334444", car_number="A111AA")
         db.session.add(client)

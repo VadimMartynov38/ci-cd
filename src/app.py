@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -10,7 +11,7 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
-    from .models import Client, Parking, ClientParking
+    from .models import Client, ClientParking, Parking
 
     with app.app_context():
         db.create_all()
